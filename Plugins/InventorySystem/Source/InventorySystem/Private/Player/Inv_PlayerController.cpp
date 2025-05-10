@@ -4,6 +4,7 @@
 
 #include "EnhancedInputComponent.h"
 #include "EnhancedInputSubsystems.h"
+#include "Interaction/Inv_Highlightable.h"
 #include "Items/Components/Inv_ItemComponent.h"
 #include "Kismet/GameplayStatics.h"
 #include "Widgets/HUD/Inv_HUDWidget.h"
@@ -89,18 +90,27 @@ void AInv_PlayerController::TraceForItem()
 
 	if (CurrentHitActor == LastHitActor) return;
 
-	// Important since is a Weak Pointer, and we need to check if it is valid.
+	// Important since it's a Weak Pointer, and we need to check if it is valid.
 	if (CurrentHitActor.IsValid())
 	{
+		if (UActorComponent* Highlightable = CurrentHitActor->FindComponentByInterface(UInv_Highlightable::StaticClass()); IsValid(Highlightable))
+		{
+			IInv_Highlightable::Execute_Highlight(Highlightable);
+		}
+		
 		UInv_ItemComponent* ItemComponent = CurrentHitActor->FindComponentByClass<UInv_ItemComponent>();
-		// Possible bug: we are returning early here and not taking care of LastHitActor.
-		if (!IsValid(ItemComponent)) return;
 
-		if (IsValid(HUDWidget)) HUDWidget->ShowPickupMessage(ItemComponent->GetPickupMessage());
+		if (IsValid(ItemComponent) && IsValid(HUDWidget))
+		{
+			HUDWidget->ShowPickupMessage(ItemComponent->GetPickupMessage());
+		}
 	}
 
 	if (LastHitActor.IsValid())
 	{
-		UE_LOG(LogTemp, Warning, TEXT("Stopped tracing Last Actor: %s"), *LastHitActor->GetName());
+		if (UActorComponent* Highlightable = LastHitActor->FindComponentByInterface(UInv_Highlightable::StaticClass()); IsValid(Highlightable))
+		{
+			IInv_Highlightable::Execute_UnHighlight(Highlightable);
+		}
 	}
 }
