@@ -4,6 +4,7 @@
 
 #include "EnhancedInputComponent.h"
 #include "EnhancedInputSubsystems.h"
+#include "Items/Components/Inv_ItemComponent.h"
 #include "Kismet/GameplayStatics.h"
 #include "Widgets/HUD/Inv_HUDWidget.h"
 
@@ -11,6 +12,7 @@ AInv_PlayerController::AInv_PlayerController()
 {
 	PrimaryActorTick.bCanEverTick = true;
 	TraceLength = 500.0;
+	ItemTraceChannel = ECC_GameTraceChannel1;
 }
 
 void AInv_PlayerController::Tick(float DeltaSeconds)
@@ -80,12 +82,21 @@ void AInv_PlayerController::TraceForItem()
 	LastHitActor = CurrentHitActor;
 	CurrentHitActor = HitResult.GetActor();
 
+	if (!CurrentHitActor.IsValid())
+	{
+		if (IsValid(HUDWidget)) HUDWidget->HidePickupMessage();
+	}
+
 	if (CurrentHitActor == LastHitActor) return;
 
 	// Important since is a Weak Pointer, and we need to check if it is valid.
 	if (CurrentHitActor.IsValid())
 	{
-		UE_LOG(LogTemp, Warning, TEXT("Started tracing Actor: %s"), *CurrentHitActor->GetName());
+		UInv_ItemComponent* ItemComponent = CurrentHitActor->FindComponentByClass<UInv_ItemComponent>();
+		// Possible bug: we are returning early here and not taking care of LastHitActor.
+		if (!IsValid(ItemComponent)) return;
+
+		if (IsValid(HUDWidget)) HUDWidget->ShowPickupMessage(ItemComponent->GetPickupMessage());
 	}
 
 	if (LastHitActor.IsValid())
