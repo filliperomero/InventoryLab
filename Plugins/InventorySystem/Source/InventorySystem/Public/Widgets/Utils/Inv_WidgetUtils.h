@@ -1,0 +1,16 @@
+﻿// Copyright Fillipe Romero. All Rights Reserved.
+
+#pragma once
+
+#include "CoreMinimal.h"
+#include "Kismet/BlueprintFunctionLibrary.h"
+#include "Inv_WidgetUtils.generated.h"
+
+UCLASS()
+class INVENTORYSYSTEM_API UInv_WidgetUtils : public UBlueprintFunctionLibrary
+{
+	GENERATED_BODY()
+
+public:
+	static int32 GetIndexFromPosition(const FIntPoint& Position, const int32 Columns);
+};
