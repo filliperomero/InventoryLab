@@ -59,7 +59,13 @@ void AInv_PlayerController::ToggleInventory()
 
 void AInv_PlayerController::PrimaryInteract()
 {
-	UE_LOG(LogTemp, Log, TEXT("PrimaryInteract"));
+	if (!CurrentHitActor.IsValid() || !InventoryComponent.IsValid()) return;
+
+	UInv_ItemComponent* ItemComponent = CurrentHitActor->FindComponentByClass<UInv_ItemComponent>();
+
+	if (!IsValid(ItemComponent)) return;
+
+	InventoryComponent->TryAddItem(ItemComponent);
 }
 
 void AInv_PlayerController::CreateHUDWidget()
