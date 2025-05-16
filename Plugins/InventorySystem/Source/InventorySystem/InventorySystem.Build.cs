@@ -26,7 +26,8 @@ public class InventorySystem : ModuleRules
 			new string[]
 			{
 				"Core",
-				"NetCore"
+				"NetCore",
+				"StructUtils",
 			}
 		);
 			
@@ -39,7 +40,7 @@ public class InventorySystem : ModuleRules
 				"Slate",
 				"SlateCore",
 				"EnhancedInput",
-				"UMG"
+				"UMG",
 			}
 		);
 		
