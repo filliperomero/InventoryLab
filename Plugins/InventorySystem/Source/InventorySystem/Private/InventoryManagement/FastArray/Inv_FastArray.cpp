@@ -33,6 +33,7 @@ void FInv_InventoryFastArray::PreReplicatedRemove(const TArrayView<int32> Remove
 	}
 }
 
+// Runs only on the Client
 void FInv_InventoryFastArray::PostReplicatedAdd(const TArrayView<int32> AddedIndices, int32 FinalSize)
 {
 	UInv_InventoryComponent* InventoryComp= Cast<UInv_InventoryComponent>(OwnerComponent);

@@ -33,7 +33,7 @@ struct FInv_InventoryFastArray : public FFastArraySerializer
 	GENERATED_BODY()
 
 	FInv_InventoryFastArray() : OwnerComponent(nullptr) {}
-	FInv_InventoryFastArray(UActorComponent InOwnerComponent) : OwnerComponent(InOwnerComponent) {}
+	FInv_InventoryFastArray(UActorComponent* InOwnerComponent) : OwnerComponent(InOwnerComponent) {}
 
 	TArray<UInv_InventoryItem*> GetAllItems() const;
 
