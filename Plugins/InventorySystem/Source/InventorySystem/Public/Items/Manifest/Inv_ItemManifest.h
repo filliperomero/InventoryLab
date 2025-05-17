@@ -9,6 +9,7 @@
 
 #include "Inv_ItemManifest.generated.h"
 
+struct FInv_ItemFragment;
 class UInv_InventoryItem;
 
 /**
@@ -25,6 +26,9 @@ struct INVENTORYSYSTEM_API FInv_ItemManifest
 	FGameplayTag GetItemType() const { return ItemType; }
 
 private:
+	UPROPERTY(EditAnywhere, Category = "Inventory System", meta=(ExcludeBaseStruct))
+	TArray<TInstancedStruct<FInv_ItemFragment>> Fragments;
+	
 	UPROPERTY(EditAnywhere, Category = "Inventory System")
 	EInv_ItemCategory ItemCategory { EInv_ItemCategory::None };
 	
