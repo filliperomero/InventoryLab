@@ -16,4 +16,7 @@ class INVENTORYSYSTEM_API UInv_InventoryStatics : public UBlueprintFunctionLibra
 public:
 	UFUNCTION(BlueprintCallable, Category = "Inventory System")
 	static UInv_InventoryComponent* GetInventoryComponent(const APlayerController* PlayerController);
+
+	UFUNCTION(BlueprintCallable, Category = "Inventory System")
+	static EInv_ItemCategory GetItemCategoryFromItemComp(UInv_ItemComponent* ItemComp);
 };
