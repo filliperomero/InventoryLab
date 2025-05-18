@@ -69,6 +69,7 @@ void UInv_InventoryGrid::AddItemToIndices(const FInv_SlotAvailabilityResult& Res
 	for (const auto& SlotAvailability : Result.SlotAvailabilities)
 	{
 		AddItemToIndex(NewItem, SlotAvailability.Index, Result.bStackable, SlotAvailability.AmountToFill);
+		UpdateGridSlots(NewItem, SlotAvailability.Index);
 	}
 }
 
@@ -123,6 +124,20 @@ void UInv_InventoryGrid::AddSlottedItemToCanvas(const int32 Index, const FInv_Gr
 	const FVector2D DrawPos = UInv_WidgetUtils::GetPositionFromIndex(Index, Columns) * TileSize;
 	const FVector2D DrawPosWithPadding = DrawPos + FVector2D(GridFragment->GetGridPadding());
 	CanvasSlot->SetPosition(DrawPosWithPadding);
+}
+
+void UInv_InventoryGrid::UpdateGridSlots(UInv_InventoryItem* NewItem, const int32 Index)
+{
+	check(GridSlots.IsValidIndex(Index))
+
+	const FInv_GridFragment* GridFragment = GetFragment<FInv_GridFragment>(NewItem, FragmentTags::Grid);
+
+	const FIntPoint Dimensions = GridFragment ? GridFragment->GetGridSize() : FIntPoint(1, 1);
+
+	UInv_InventoryStatics::ForEach2D(GridSlots, Index, Dimensions, Columns, [this](UInv_GridSlot* GridSlot)
+	{
+		GridSlot->SetOccupiedTexture();
+	});
 }
 
 void UInv_InventoryGrid::ConstructGrid()
