@@ -27,3 +27,13 @@ public:
 	const FInv_ItemManifest& GetItemManifest() const { return ItemManifest.Get<FInv_ItemManifest>(); }
 	FInv_ItemManifest& GetItemManifestMutable() { return ItemManifest.GetMutable<FInv_ItemManifest>(); }
 };
+
+template <typename FragmentType>
+const FragmentType* GetFragment(const UInv_InventoryItem* InventoryItem, const FGameplayTag& FragmentTag)
+{
+	if (!IsValid(InventoryItem) || !FragmentTag.IsValid()) return nullptr;
+
+	const FInv_ItemManifest& Manifest = InventoryItem->GetItemManifest();
+
+	return Manifest.GetFragmentOfTypeWithTag<FragmentType>(FragmentTag);
+}
