@@ -40,6 +40,7 @@ private:
 	bool MatchesCategory(const UInv_InventoryItem* Item) const;
 	FVector2D GetDrawSize(const FInv_GridFragment* GridFragment) const;
 	void SetSlottedItemImage(const UInv_SlottedItem* SlottedItem, const FInv_GridFragment* GridFragment, const FInv_ImageFragment* ImageFragment) const;
+	void AddSlottedItemToCanvas(const int32 Index, const FInv_GridFragment* GridFragment, UInv_SlottedItem* SlottedItem) const;
 	
 	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = "Inventory System", meta=(AllowPrivateAccess = "true"))
 	EInv_ItemCategory ItemCategory;
@@ -56,11 +57,14 @@ private:
 	UPROPERTY(EditAnywhere, Category = "Inventory System")
 	TSubclassOf<UInv_SlottedItem> SlottedItemClass;
 
+	UPROPERTY()
+	TMap<int32, TObjectPtr<UInv_SlottedItem>> SlottedItems;
+
 	UPROPERTY(EditAnywhere, Category = "Inventory System")
 	int32 Rows { 4 };
 
 	UPROPERTY(EditAnywhere, Category = "Inventory System")
-	int32 Columns { 8};
+	int32 Columns { 8 };
 
 	UPROPERTY(EditAnywhere, Category = "Inventory System")
 	float TileSize { 54.f };
