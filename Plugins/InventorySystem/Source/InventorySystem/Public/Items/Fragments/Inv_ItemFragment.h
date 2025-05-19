@@ -63,3 +63,19 @@ private:
 	UPROPERTY(EditAnywhere, Category = "Inventory System")
 	FVector2D IconDimensions { 44.f, 44.f };
 };
+
+USTRUCT(BlueprintType)
+struct FInv_StackableFragment : public FInv_ItemFragment
+{
+	GENERATED_BODY()
+
+	int32 GetStackCount() const { return StackCount; }
+	int32 GetMaxStackSize() const { return MaxStackSize; }
+
+private:
+	UPROPERTY(EditAnywhere, Category = "Inventory System")
+	int32 MaxStackSize { 1 };
+
+	UPROPERTY(EditAnywhere, Category = "Inventory System")
+	int32 StackCount { 1 };
+};
