@@ -18,6 +18,7 @@ public:
 	virtual bool IsSupportedForNetworking() const override { return true; }
 
 	void SetItemManifest(const FInv_ItemManifest& Manifest);
+	bool IsStackable() const;
 
 private:
 	UPROPERTY(VisibleAnywhere, Category = "Inventory System", meta=(BaseStruct="/Script/InventorySystem.Inv_ItemManifest"), Replicated)
