@@ -69,6 +69,9 @@ FInv_SlotAvailabilityResult UInv_InventoryGrid::HasRoomForItem(const FInv_ItemMa
 		// Is this index claimed yet?
 		if (IsIndexClaimed(ClaimedIndices, GridSlot->GetTileIndex())) continue;
 
+		// Is the item in grid bounds?
+		if (!IsInGridBounds(GridSlot->GetTileIndex(), GetItemDimensions(Manifest))) continue;
+
 		// Can the item fit here? (i.e., Is it out of grid bounds?)
 		TSet<int32> TentativelyClaimed;
 		if (!HasRoomAtIndex(GridSlot, GetItemDimensions(Manifest), ClaimedIndices, TentativelyClaimed, Manifest.GetItemType(), MaxStackSize))
@@ -155,6 +158,16 @@ bool UInv_InventoryGrid::IsUpperLeftSlot(const UInv_GridSlot* GridSlot, const UI
 bool UInv_InventoryGrid::DoesItemTypeMatch(const UInv_InventoryItem* SubItem, const FGameplayTag& ItemType) const
 {
 	return SubItem->GetItemManifest().GetItemType().MatchesTagExact(ItemType);
+}
+
+bool UInv_InventoryGrid::IsInGridBounds(const int32 StartIndex, const FIntPoint& ItemDimensions) const
+{
+	if (StartIndex < 0 || StartIndex >= GridSlots.Num()) return false;
+
+	const int32 EndColumn = (StartIndex % Columns) + ItemDimensions.X;
+	const int32 EndRow = (StartIndex / Columns) + ItemDimensions.Y;
+
+	return EndColumn <= Columns && EndRow <= Rows;
 }
 
 void UInv_InventoryGrid::AddItem(UInv_InventoryItem* Item)
