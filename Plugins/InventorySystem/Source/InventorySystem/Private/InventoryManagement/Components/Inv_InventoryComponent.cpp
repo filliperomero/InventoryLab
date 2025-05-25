@@ -1,7 +1,8 @@
 ﻿// Copyright Fillipe Romero. All Rights Reserved.
 
 #include "InventoryManagement/Components/Inv_InventoryComponent.h"
-
+#include "Items/Inv_InventoryItem.h"
+#include "Items/Components/Inv_ItemComponent.h"
 #include "Net/UnrealNetwork.h"
 #include "Widgets/Inventory/InventoryBase/Inv_InventoryBase.h"
 
@@ -23,6 +24,9 @@ void UInv_InventoryComponent::TryAddItem(UInv_ItemComponent* ItemComponent)
 {
 	FInv_SlotAvailabilityResult Result = InventoryMenu->HasRoomForItem(ItemComponent);
 
+	UInv_InventoryItem* FoundItem = InventoryList.FindFirstItemByType(ItemComponent->GetItemManifest().GetItemType());
+	Result.Item = FoundItem;
+
 	if (Result.TotalRoomToFill == 0)
 	{
 		NoRoomInInventory.Broadcast();
@@ -31,12 +35,12 @@ void UInv_InventoryComponent::TryAddItem(UInv_ItemComponent* ItemComponent)
 	
 	if (Result.Item.IsValid() && Result.bStackable)
 	{
-		// TODO: Add Stacks to an item that already exists in the inventory. We only want to update the stack count, not creat a new item of this type.
+		// Add Stacks to an item that already exists in the inventory. We only want to update the stack count, not creat a new item of this type.
 		Server_AddStacksToItem(ItemComponent, Result.TotalRoomToFill, Result.Remainder);
 	}
 	else if (Result.TotalRoomToFill > 0)
 	{
-		// TODO: This item type doesn't exist in the inventory. Create a new one and update all pertinent slots.
+		// This item type doesn't exist in the inventory. Create a new one and update all pertinent slots.
 		Server_AddNewItem(ItemComponent, Result.bStackable ? Result.TotalRoomToFill : 0);
 	}
 }
