@@ -43,13 +43,6 @@ FInv_SlotAvailabilityResult UInv_InventoryGrid::HasRoomForItem(const FInv_ItemMa
 {
 	FInv_SlotAvailabilityResult Result;
 
-	/**
-	 * 3. For Each grid slot:
-	 *	
-	 *	g. Update the amount left to fill.
-	 * 4. How much is the Remainder?
-	 */
-
 	// Determine if the item is stackable
 	const FInv_StackableFragment* StackableFragment = Manifest.GetFragmentOfType<FInv_StackableFragment>();
 	Result.bStackable = StackableFragment != nullptr;
@@ -78,13 +71,28 @@ FInv_SlotAvailabilityResult UInv_InventoryGrid::HasRoomForItem(const FInv_ItemMa
 			continue;
 		}
 
-		ClaimedIndices.Append(TentativelyClaimed);
-
 		// How much to fill?
 		const int32 AmountToFillInSlot = DetermineFillAmountForSlot(Result.bStackable, MaxStackSize, AmountToFill, GridSlot);
 		if (AmountToFillInSlot == 0) continue;
 
+		ClaimedIndices.Append(TentativelyClaimed);
+
 		// Update the amount left to fill
+		Result.TotalRoomToFill += AmountToFillInSlot;
+		// Emplace avoid copy
+		Result.SlotAvailabilities.Emplace(
+			FInv_SlotAvailability {
+				HasValidItem(GridSlot) ? GridSlot->GetUpperLeftIndex() : GridSlot->GetTileIndex(),
+				Result.bStackable ? AmountToFillInSlot : 0,
+				HasValidItem(GridSlot)
+			}
+		);
+
+		AmountToFill -= AmountToFillInSlot;
+		// How much is the Remainder?
+		Result.Remainder = AmountToFill;
+
+		if (AmountToFillInSlot == 0) return Result;
 	}
 	
 	return Result;
