@@ -46,7 +46,6 @@ FInv_SlotAvailabilityResult UInv_InventoryGrid::HasRoomForItem(const FInv_ItemMa
 	/**
 	 * 3. For Each grid slot:
 	 *	
-	 *	f. How much to fill?
 	 *	g. Update the amount left to fill.
 	 * 4. How much is the Remainder?
 	 */
@@ -80,6 +79,12 @@ FInv_SlotAvailabilityResult UInv_InventoryGrid::HasRoomForItem(const FInv_ItemMa
 		}
 
 		ClaimedIndices.Append(TentativelyClaimed);
+
+		// How much to fill?
+		const int32 AmountToFillInSlot = DetermineFillAmountForSlot(Result.bStackable, MaxStackSize, AmountToFill, GridSlot);
+		if (AmountToFillInSlot == 0) continue;
+
+		// Update the amount left to fill
 	}
 	
 	return Result;
@@ -168,6 +173,27 @@ bool UInv_InventoryGrid::IsInGridBounds(const int32 StartIndex, const FIntPoint&
 	const int32 EndRow = (StartIndex / Columns) + ItemDimensions.Y;
 
 	return EndColumn <= Columns && EndRow <= Rows;
+}
+
+int32 UInv_InventoryGrid::DetermineFillAmountForSlot(const bool bStackable, const int32 MaxStackSize, const int32 AmountToFill, const UInv_GridSlot* GridSlot) const
+{
+	const int32 RoomInSlot = MaxStackSize - GetStackAmount(GridSlot);
+	
+	return bStackable ? FMath::Min(AmountToFill, RoomInSlot) : 1;
+}
+
+int32 UInv_InventoryGrid::GetStackAmount(const UInv_GridSlot* GridSlot) const
+{
+	int32 CurrentSlotStackCount = GridSlot->GetStackCount();
+
+	// If we are at a slot that doesn't hold the stack count, we must get the actual stack count
+	if (const int32 UpperLeftIndex = GridSlot->GetUpperLeftIndex(); UpperLeftIndex != INDEX_NONE)
+	{
+		const UInv_GridSlot* UpperLeftSlot = GridSlots[UpperLeftIndex];
+		CurrentSlotStackCount = UpperLeftSlot->GetStackCount();
+	}
+
+	return CurrentSlotStackCount;
 }
 
 void UInv_InventoryGrid::AddItem(UInv_InventoryItem* Item)
