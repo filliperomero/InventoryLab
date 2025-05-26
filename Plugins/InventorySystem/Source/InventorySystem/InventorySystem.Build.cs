@@ -27,7 +27,6 @@ public class InventorySystem : ModuleRules
 			{
 				"Core",
 				"NetCore",
-				"StructUtils",
 				"GameplayTags"
 			}
 		);
@@ -42,6 +41,7 @@ public class InventorySystem : ModuleRules
 				"SlateCore",
 				"EnhancedInput",
 				"UMG",
+				"InputCore"
 			}
 		);
 		
