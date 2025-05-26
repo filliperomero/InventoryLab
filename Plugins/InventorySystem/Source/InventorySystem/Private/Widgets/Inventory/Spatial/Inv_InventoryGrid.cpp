@@ -26,6 +26,7 @@ void UInv_InventoryGrid::NativeOnInitialized()
 	if (InventoryComponent.IsValid())
 	{
 		InventoryComponent->OnItemAdded.AddDynamic(this, &ThisClass::AddItem);
+		InventoryComponent->OnStackChange.AddDynamic(this, &ThisClass::AddStacks);
 	}
 }
 
@@ -202,6 +203,29 @@ int32 UInv_InventoryGrid::GetStackAmount(const UInv_GridSlot* GridSlot) const
 	}
 
 	return CurrentSlotStackCount;
+}
+
+void UInv_InventoryGrid::AddStacks(const FInv_SlotAvailabilityResult& Result)
+{
+	if (!MatchesCategory(Result.Item.Get())) return;
+
+	for (const auto& SlotAvailability : Result.SlotAvailabilities)
+	{
+		if (SlotAvailability.bItemAtIndex)
+		{
+			const auto& GridSlot = GridSlots[SlotAvailability.Index];
+			const auto& SlottedItem = SlottedItems.FindChecked(SlotAvailability.Index);
+			const int32 NewStackCount = GridSlot->GetStackCount() + SlotAvailability.AmountToFill;
+			
+			SlottedItem->UpdateStackCount(NewStackCount);
+			GridSlot->SetStackCount(NewStackCount);
+		}
+		else
+		{
+			AddItemToIndex(Result.Item.Get(), SlotAvailability.Index, Result.bStackable, SlotAvailability.AmountToFill);
+			UpdateGridSlots(Result.Item.Get(), SlotAvailability.Index, Result.bStackable, SlotAvailability.AmountToFill);
+		}
+	}
 }
 
 void UInv_InventoryGrid::AddItem(UInv_InventoryItem* Item)
