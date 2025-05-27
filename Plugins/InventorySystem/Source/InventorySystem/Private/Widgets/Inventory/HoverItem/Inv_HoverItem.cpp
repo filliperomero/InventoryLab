@@ -10,8 +10,9 @@ void UInv_HoverItem::SetImageBrush(const FSlateBrush& Brush) const
 	Image_Icon->SetBrush(Brush);
 }
 
-void UInv_HoverItem::UpdateStackCount(const int32 Count) const
+void UInv_HoverItem::UpdateStackCount(const int32 Count)
 {
+	StackCount = Count;
 	if (Count > 0)
 	{
 		Text_StackCount->SetText(FText::AsNumber(Count));
@@ -36,7 +37,7 @@ FGameplayTag UInv_HoverItem::GetItemType() const
 void UInv_HoverItem::SetIsStackable(bool bStacks)
 {
 	bIsStackable = bStacks;
-	if (bStacks)
+	if (!bStacks)
 	{
 		Text_StackCount->SetVisibility(ESlateVisibility::Collapsed);
 	}
