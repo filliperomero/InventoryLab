@@ -6,12 +6,17 @@
 #include "Kismet/BlueprintFunctionLibrary.h"
 #include "Inv_WidgetUtils.generated.h"
 
+class UWidget;
+
 UCLASS()
 class INVENTORYSYSTEM_API UInv_WidgetUtils : public UBlueprintFunctionLibrary
 {
 	GENERATED_BODY()
 
 public:
+	UFUNCTION(BlueprintCallable, Category = "Inventory System")
+	static FVector2D GetWidgetPosition(UWidget* Widget);
+
 	static int32 GetIndexFromPosition(const FIntPoint& Position, const int32 Columns);
 	static FIntPoint GetPositionFromIndex(const int32 Index, const int32 Columns);
 };
