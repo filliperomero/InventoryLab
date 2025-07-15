@@ -54,7 +54,7 @@ private:
 	UPROPERTY(EditDefaultsOnly, Category = "Inventory System")
 	TEnumAsByte<ECollisionChannel> ItemTraceChannel;
 
-	// This will not affect Garbage collector since UPRORPERTY prevents the GC
+	// This will not affect Garbage Collection since UPROPERTY prevents the GC
 	TWeakObjectPtr<AActor> CurrentHitActor;
 	TWeakObjectPtr<AActor> LastHitActor;
 };
