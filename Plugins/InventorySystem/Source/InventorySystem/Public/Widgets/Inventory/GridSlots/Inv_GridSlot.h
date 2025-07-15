@@ -10,7 +10,7 @@ class UInv_InventoryItem;
 class UImage;
 
 UENUM(BlueprintType)
-enum EInv_GridSlotState : uint8
+enum class EInv_GridSlotState : uint8
 {
 	Unoccupied,
 	Occupied,
