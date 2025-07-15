@@ -32,9 +32,9 @@ public:
 
 private:
 	int32 TileIndex { INDEX_NONE };
-	int32 StackCount;
+	int32 StackCount { 0 };
 	int32 UpperLeftIndex { INDEX_NONE };
-	bool bAvailable;
+	bool bAvailable { true };
 	TWeakObjectPtr<UInv_InventoryItem> InventoryItem;
 	
 	UPROPERTY(meta=(BindWidget))
