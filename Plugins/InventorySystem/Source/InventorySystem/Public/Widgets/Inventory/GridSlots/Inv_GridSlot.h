@@ -52,7 +52,7 @@ private:
 	UPROPERTY(EditAnywhere, Category = "Inventory System")
 	FSlateBrush Brush_GrayedOut;
 
-	EInv_GridSlotState GridSlotState { Unoccupied };
+	EInv_GridSlotState GridSlotState { EInv_GridSlotState::Unoccupied };
 	
 public:
 	int32 GetTileIndex() const { return TileIndex; }
