@@ -661,6 +661,45 @@ void UInv_InventoryGrid::ConstructGrid()
 
 void UInv_InventoryGrid::OnGridSlotClicked(int32 GridIndex, const FPointerEvent& MouseEvent)
 {
+	if (!IsValid(HoverItem)) return;
+	if (!GridSlots.IsValidIndex(ItemDropIndex)) return;
+	
+	if (CurrentQueryResult.ValidItem.IsValid() && GridSlots.IsValidIndex(CurrentQueryResult.UpperLeftIndex))
+	{
+		OnSlottedItemClicked(CurrentQueryResult.UpperLeftIndex, MouseEvent);
+		return;
+	}
+
+	auto GridSlot = GridSlots[ItemDropIndex];
+	if (!GridSlot->GetInventoryItem().IsValid())
+	{
+		PutDownOnIndex(ItemDropIndex);
+	}
+}
+
+void UInv_InventoryGrid::PutDownOnIndex(const int32 Index)
+{
+	if (!IsValid(HoverItem)) return;
+
+	AddItemToIndex(HoverItem->GetInventoryItem(), Index, HoverItem->IsStackable(), HoverItem->GetStackCount());
+	UpdateGridSlots(HoverItem->GetInventoryItem(), Index, HoverItem->IsStackable(), HoverItem->GetStackCount());
+	ClearHoverItem();
+}
+
+void UInv_InventoryGrid::ClearHoverItem()
+{
+	if (!IsValid(HoverItem)) return;
+
+	HoverItem->SetInventoryItem(nullptr);
+	HoverItem->SetIsStackable(false);
+	HoverItem->SetPreviousIndex(INDEX_NONE);
+	HoverItem->UpdateStackCount(0);
+	HoverItem->SetImageBrush(FSlateNoResource());
+
+	HoverItem->RemoveFromParent();
+	HoverItem = nullptr;
+
+	// TODO: Show Mouse Cursor
 }
 
 void UInv_InventoryGrid::OnGridSlotHovered(int32 GridIndex, const FPointerEvent& MouseEvent)
