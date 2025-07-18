@@ -28,6 +28,9 @@ public:
 	virtual void NativeOnInitialized() override;
 	virtual void NativeTick(const FGeometry& MyGeometry, float InDeltaTime) override;
 
+	void ShowCursor();
+	void HideCursor();
+
 	UFUNCTION()
 	void AddItem(UInv_InventoryItem* Item);
 
@@ -74,6 +77,8 @@ private:
 	void ChangeHoverType(const int32 Index, const FIntPoint& Dimensions, EInv_GridSlotState GridSlotState);
 	void PutDownOnIndex(const int32 Index);
 	void ClearHoverItem();
+	UUserWidget* GetVisibleCursorWidget();
+	UUserWidget* GetHiddenCursorWidget();
 
 	UFUNCTION()
 	void AddStacks(const FInv_SlotAvailabilityResult& Result);
@@ -104,6 +109,18 @@ private:
 
 	UPROPERTY(EditAnywhere, Category = "Inventory System")
 	TSubclassOf<UInv_SlottedItem> SlottedItemClass;
+
+	UPROPERTY(EditAnywhere, Category = "Inventory System")
+	TSubclassOf<UUserWidget> VisibleCursorWidgetClass;
+
+	UPROPERTY(EditAnywhere, Category = "Inventory System")
+	TSubclassOf<UUserWidget> HiddenCursorWidgetClass;
+
+	UPROPERTY()
+	TObjectPtr<UUserWidget> VisibleCursorWidget;
+
+	UPROPERTY()
+	TObjectPtr<UUserWidget> HiddenCursorWidget;
 
 	UPROPERTY()
 	TMap<int32, TObjectPtr<UInv_SlottedItem>> SlottedItems;
