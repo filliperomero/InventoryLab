@@ -79,6 +79,8 @@ private:
 	void ClearHoverItem();
 	UUserWidget* GetVisibleCursorWidget();
 	UUserWidget* GetHiddenCursorWidget();
+	bool IsSameStackable(const UInv_InventoryItem* ClickedInventoryItem) const;
+	void SwapWithHoverItem(UInv_InventoryItem* ClickedInventoryItem, const int32 GridIndex);
 
 	UFUNCTION()
 	void AddStacks(const FInv_SlotAvailabilityResult& Result);
