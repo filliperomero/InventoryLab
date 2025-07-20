@@ -19,6 +19,7 @@ public:
 
 	void SetItemManifest(const FInv_ItemManifest& Manifest);
 	bool IsStackable() const;
+	bool IsConsumable() const;
 
 private:
 	UPROPERTY(VisibleAnywhere, Category = "Inventory System", meta=(BaseStruct="/Script/InventorySystem.Inv_ItemManifest"), Replicated)
