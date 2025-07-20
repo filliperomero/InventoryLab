@@ -67,6 +67,9 @@ private:
 	FSlateBrush Brush_GrayedOut;
 
 	EInv_GridSlotState GridSlotState { EInv_GridSlotState::Unoccupied };
+
+	UFUNCTION()
+	void OnItemPopUpDestruct(UUserWidget* Menu);
 	
 public:
 	int32 GetTileIndex() const { return TileIndex; }
