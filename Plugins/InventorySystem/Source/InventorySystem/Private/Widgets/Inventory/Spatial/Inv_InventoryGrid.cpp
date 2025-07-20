@@ -584,10 +584,13 @@ void UInv_InventoryGrid::CreateItemPopUp(const int32 GridIndex)
 {
 	UInv_InventoryItem* RightClickedItem = GridSlots[GridIndex]->GetInventoryItem().Get();
 	if (!IsValid(RightClickedItem)) return;
+	// Dont' create a new ItemPopUp if one is already in the slot
+	if (IsValid(GridSlots[GridIndex]->GetItemPopUp())) return;
 
 	checkf(ItemPopUpClass, TEXT("Item Pop Up Class is not set in: %s"), *GetName())
 
 	ItemPopUp = CreateWidget<UInv_ItemPopUp>(this, ItemPopUpClass);
+	GridSlots[GridIndex]->SetItemPopUp(ItemPopUp);
 	ItemPopUp->SetGridIndex(GridIndex);
 
 	OwningCanvasPanel->AddChild(ItemPopUp);

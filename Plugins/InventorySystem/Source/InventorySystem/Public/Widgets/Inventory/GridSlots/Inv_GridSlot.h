@@ -6,6 +6,7 @@
 #include "Blueprint/UserWidget.h"
 #include "Inv_GridSlot.generated.h"
 
+class UInv_ItemPopUp;
 class UInv_InventoryItem;
 class UImage;
 
@@ -35,17 +36,20 @@ public:
 	void SetSelectedTexture();
 	void SetGrayedOutTexture();
 	void SetInventoryItem(UInv_InventoryItem* Item);
+	void SetItemPopUp(UInv_ItemPopUp* InItemPopup);
+	UInv_ItemPopUp* GetItemPopUp() const;
 
 	FGridSlotEvent GridSlotClicked;
 	FGridSlotEvent GridSlotHovered;
 	FGridSlotEvent GridSlotUnhovered;
 
 private:
-	int32 TileIndex { INDEX_NONE };
 	int32 StackCount { 0 };
-	int32 UpperLeftIndex { INDEX_NONE };
 	bool bAvailable { true };
+	int32 TileIndex { INDEX_NONE };
+	int32 UpperLeftIndex { INDEX_NONE };
 	TWeakObjectPtr<UInv_InventoryItem> InventoryItem;
+	TWeakObjectPtr<UInv_ItemPopUp> ItemPopUp;
 	
 	UPROPERTY(meta=(BindWidget))
 	TObjectPtr<UImage> Image_GridSlot;
