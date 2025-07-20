@@ -106,6 +106,15 @@ private:
 
 	UFUNCTION()
 	void OnGridSlotUnhovered(int32 GridIndex, const FPointerEvent& MouseEvent);
+
+	UFUNCTION()
+	void OnPopUpMenuSplit(int32 SplitAmount, int32 GridIndex);
+
+	UFUNCTION()
+	void OnPopUpMenuDrop(int32 GridIndex);
+
+	UFUNCTION()
+	void OnPopUpMenuConsume(int32 GridIndex);
 	
 	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = "Inventory System", meta=(AllowPrivateAccess = "true"))
 	EInv_ItemCategory ItemCategory;
