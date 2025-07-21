@@ -16,6 +16,7 @@ public:
 	UInv_ItemComponent();
 	virtual void GetLifetimeReplicatedProps(TArray<class FLifetimeProperty>& OutLifetimeProps) const override;
 
+	void InitItemManifest(FInv_ItemManifest CopyOfManifest);
 	void PickedUp();
 
 private:	

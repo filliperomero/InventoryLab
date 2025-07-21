@@ -948,6 +948,21 @@ void UInv_InventoryGrid::OnPopUpMenuSplit(int32 SplitAmount, int32 GridIndex)
 
 void UInv_InventoryGrid::OnPopUpMenuDrop(int32 GridIndex)
 {
+	UInv_InventoryItem* RightClickedItem = GridSlots[GridIndex]->GetInventoryItem().Get();
+	if(!IsValid(RightClickedItem)) return;
+
+	PickUp(RightClickedItem, GridIndex);
+	DropItem();
+}
+
+void UInv_InventoryGrid::DropItem()
+{
+	if (!IsValid(HoverItem) || !IsValid(HoverItem->GetInventoryItem())) return;
+	
+	InventoryComponent->Server_DropItem(HoverItem->GetInventoryItem(), HoverItem->GetStackCount());
+
+	ClearHoverItem();
+	ShowCursor();
 }
 
 void UInv_InventoryGrid::OnPopUpMenuConsume(int32 GridIndex)
