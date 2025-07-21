@@ -6,6 +6,8 @@
 #include "GameplayTagContainer.h"
 #include "Inv_ItemFragment.generated.h"
 
+class APlayerController;
+
 USTRUCT(BlueprintType)
 struct FInv_ItemFragment
 {
@@ -79,4 +81,34 @@ private:
 
 	UPROPERTY(EditAnywhere, Category = "Inventory System")
 	int32 StackCount { 1 };
+};
+
+USTRUCT(BlueprintType)
+struct FInv_ConsumableFragment : public FInv_ItemFragment
+{
+	GENERATED_BODY()
+
+	virtual void OnConsume(APlayerController* PlayerController) {}
+};
+
+USTRUCT(BlueprintType)
+struct FInv_HealthPotionFragment : public FInv_ConsumableFragment
+{
+	GENERATED_BODY()
+
+	UPROPERTY(EditAnywhere, Category = "Inventory System")
+	float HealAmount { 20.f };
+
+	virtual void OnConsume(APlayerController* PlayerController) override;
+};
+
+USTRUCT(BlueprintType)
+struct FInv_ManaPotionFragment : public FInv_ConsumableFragment
+{
+	GENERATED_BODY()
+
+	UPROPERTY(EditAnywhere, Category = "Inventory System")
+	float ManaAmount { 53.f };
+
+	virtual void OnConsume(APlayerController* PlayerController) override;
 };
