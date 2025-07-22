@@ -3,7 +3,7 @@
 #pragma once
 
 #include "CoreMinimal.h"
-#include "Editor/VREditor/Private/UI/VREditorBaseUserWidget.h"
+#include "Blueprint/UserWidget.h"
 #include "Inv_ItemPopUp.generated.h"
 
 class USizeBox;

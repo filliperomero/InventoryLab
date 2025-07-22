@@ -1,6 +1,6 @@
 ﻿// Copyright Fillipe Romero. All Rights Reserved.
 
-#include "Inv_ItemDescription.h"
+#include "Widgets/ItemDescription/Inv_ItemDescription.h"
 
 #include "Components/SizeBox.h"
 
