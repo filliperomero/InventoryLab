@@ -85,4 +85,7 @@ private:
 
 	UPROPERTY(EditAnywhere, Category = "Inventory System")
 	float RelativeSpawnElevation = -70.f;
+
+public:
+	UInv_InventoryBase* GetInventoryMenu() const { return InventoryMenu; }
 };

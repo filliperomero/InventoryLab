@@ -19,6 +19,8 @@ class INVENTORYSYSTEM_API UInv_SlottedItem : public UUserWidget
 
 public:
 	virtual FReply NativeOnMouseButtonDown(const FGeometry& InGeometry, const FPointerEvent& InMouseEvent) override;
+	virtual void NativeOnMouseEnter(const FGeometry& InGeometry, const FPointerEvent& InMouseEvent) override;
+	virtual void NativeOnMouseLeave(const FPointerEvent& InMouseEvent) override;
 	
 	void SetImageBrush(const FSlateBrush& Brush) const;
 	void SetInventoryItem(UInv_InventoryItem* Item);
