@@ -8,4 +8,5 @@ namespace FragmentTags
 	UE_DEFINE_GAMEPLAY_TAG_COMMENT(Icon, "FragmentTags.Icon", "Icon Fragment Tag")
 	UE_DEFINE_GAMEPLAY_TAG_COMMENT(Stackable, "FragmentTags.Stackable", "Stackable Fragment Tag")
 	UE_DEFINE_GAMEPLAY_TAG_COMMENT(Consumable, "FragmentTags.Consumable", "Consumable Fragment Tag")
+	UE_DEFINE_GAMEPLAY_TAG_COMMENT(ItemName, "FragmentTags.ItemName", "Item Name Fragment Tag")
 }
