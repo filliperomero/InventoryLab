@@ -71,6 +71,37 @@ void FInv_LabeledNumberFragment::Manifest()
 	}
 }
 
+void FInv_ConsumableFragment::Assimilate(UInv_CompositeBase* Composite) const
+{
+	FInv_InventoryItemFragment::Assimilate(Composite);
+
+	for (const auto& Modifier : ConsumeModifiers)
+	{
+		const auto& ModifierRef = Modifier.Get();
+		ModifierRef.Assimilate(Composite);
+	}
+}
+
+void FInv_ConsumableFragment::OnConsume(APlayerController* PlayerController)
+{
+	for (auto& Modifier : ConsumeModifiers)
+	{
+		auto& ModifierRef = Modifier.GetMutable();
+		ModifierRef.OnConsume(PlayerController);
+	}
+}
+
+void FInv_ConsumableFragment::Manifest()
+{
+	FInv_InventoryItemFragment::Manifest();
+
+	for (auto& Modifier : ConsumeModifiers)
+	{
+		auto& ModifierRef = Modifier.GetMutable();
+		ModifierRef.Manifest();
+	}
+}
+
 void FInv_HealthPotionFragment::OnConsume(APlayerController* PlayerController)
 {
 	/// Get a stats component from the PlayerController or the PlayerController->GetPawn()
@@ -78,10 +109,10 @@ void FInv_HealthPotionFragment::OnConsume(APlayerController* PlayerController)
 	/// or call an interface function for Healing()
 	/// P.S.: This will be called in the server, so make sure affected variables are replicated and/or RPC's are called
 
-	GEngine->AddOnScreenDebugMessage(-1, 5.f, FColor::Red, FString::Printf(TEXT("Health Potion Consumed! Healing by %f"), HealAmount));
+	GEngine->AddOnScreenDebugMessage(-1, 5.f, FColor::Red, FString::Printf(TEXT("Health Potion Consumed! Healing by %f"), GetValue()));
 }
 
 void FInv_ManaPotionFragment::OnConsume(APlayerController* PlayerController)
 {
-	GEngine->AddOnScreenDebugMessage(-1, 5.f, FColor::Blue, FString::Printf(TEXT("Mana Potion Consumed! Mana replenishment by %f"), ManaAmount));
+	GEngine->AddOnScreenDebugMessage(-1, 5.f, FColor::Blue, FString::Printf(TEXT("Mana Potion Consumed! Mana replenishment by %f"), GetValue()));
 }

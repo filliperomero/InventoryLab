@@ -11,4 +11,11 @@ namespace FragmentTags
 	UE_DEFINE_GAMEPLAY_TAG_COMMENT(ItemName, "FragmentTags.ItemName", "Item Name Fragment Tag")
 
 	UE_DEFINE_GAMEPLAY_TAG_COMMENT(PrimaryStat, "FragmentTags.PrimaryStat", "Primary Stat Fragment Tag")
+
+	namespace StatMod
+	{
+		UE_DEFINE_GAMEPLAY_TAG_COMMENT(StatMod_1, "FragmentTags.StatMod.1", "Stat Mod 1 Fragment Tag")
+		UE_DEFINE_GAMEPLAY_TAG_COMMENT(StatMod_2, "FragmentTags.StatMod.2", "Stat Mod 2 Fragment Tag")
+		UE_DEFINE_GAMEPLAY_TAG_COMMENT(StatMod_3, "FragmentTags.StatMod.3", "Stat Mod 3 Fragment Tag")
+	}
 }
