@@ -12,6 +12,13 @@ UInv_InventoryItem* FInv_ItemManifest::Manifest(UObject* NewOuter)
 	UInv_InventoryItem* Item = NewObject<UInv_InventoryItem>(NewOuter, UInv_InventoryItem::StaticClass());
 	Item->SetItemManifest(*this);
 
+	for (auto& Fragment : Item->GetItemManifestMutable().GetItemFragmentsMutable())
+	{
+		Fragment.GetMutable().Manifest();
+	}
+
+	ClearFragments();
+
 	return Item;
 }
 
@@ -42,4 +49,14 @@ void FInv_ItemManifest::SpawnPickupActor(const UObject* WorldContextObject, cons
 	checkf(ItemComp, TEXT("Spawned Actor should have Item Component on it."));
 
 	ItemComp->InitItemManifest(*this);
+}
+
+void FInv_ItemManifest::ClearFragments()
+{
+	for (auto& Fragment : GetItemFragmentsMutable())
+	{
+		Fragment.Reset();
+	}
+
+	GetItemFragmentsMutable().Empty();
 }

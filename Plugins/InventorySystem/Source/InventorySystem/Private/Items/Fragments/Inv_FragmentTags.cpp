@@ -9,4 +9,6 @@ namespace FragmentTags
 	UE_DEFINE_GAMEPLAY_TAG_COMMENT(Stackable, "FragmentTags.Stackable", "Stackable Fragment Tag")
 	UE_DEFINE_GAMEPLAY_TAG_COMMENT(Consumable, "FragmentTags.Consumable", "Consumable Fragment Tag")
 	UE_DEFINE_GAMEPLAY_TAG_COMMENT(ItemName, "FragmentTags.ItemName", "Item Name Fragment Tag")
+
+	UE_DEFINE_GAMEPLAY_TAG_COMMENT(PrimaryStat, "FragmentTags.PrimaryStat", "Primary Stat Fragment Tag")
 }

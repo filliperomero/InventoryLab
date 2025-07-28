@@ -27,6 +27,7 @@ struct FInv_ItemFragment
 
 	FGameplayTag GetFragmentTag() const { return FragmentTag; }
 	void SetFragmentTag(FGameplayTag Tag) { FragmentTag = Tag; }
+	virtual void Manifest() {}
 
 private:
 	UPROPERTY(EditAnywhere, Category = "Inventory System", meta=(Categories="FragmentTags"))
@@ -92,6 +93,46 @@ struct FInv_TextFragment : public FInv_InventoryItemFragment
 private:
 	UPROPERTY(EditAnywhere, Category = "Inventory System")
 	FText FragmentText;
+};
+
+USTRUCT(BlueprintType)
+struct FInv_LabeledNumberFragment : public FInv_InventoryItemFragment
+{
+	GENERATED_BODY()
+
+	virtual void Manifest() override;
+
+	FText GetText() const { return Text_Label; }
+	void SetText(const FText& InText) { Text_Label = InText; }
+	virtual void Assimilate(UInv_CompositeBase* Composite) const override;
+
+private:
+	UPROPERTY(EditAnywhere, Category = "Inventory System")
+	FText Text_Label;
+
+	UPROPERTY(VisibleAnywhere, Category = "Inventory System")
+	float Value { 0.f };
+
+	UPROPERTY(EditAnywhere, Category = "Inventory System")
+	float MinValue { 0.f };
+
+	UPROPERTY(EditAnywhere, Category = "Inventory System")
+	float MaxValue { 0.f };
+
+	UPROPERTY(EditAnywhere, Category = "Inventory System")
+	int32 MinFractionalDigits { 1 };
+
+	UPROPERTY(EditAnywhere, Category = "Inventory System")
+	int32 MaxFractionalDigits { 1 };
+
+	// When Manifesting for the first time, this fragment will randomize. However, once equipped and dropped, an item should retain the same value, so randomization should not occur.
+	bool bRandomizeOnManifest { true };
+
+	UPROPERTY(EditAnywhere, Category = "Inventory System")
+	bool bCollapseLabel { false };
+
+	UPROPERTY(EditAnywhere, Category = "Inventory System")
+	bool bCollapseValue { false };
 };
 
 USTRUCT(BlueprintType)
