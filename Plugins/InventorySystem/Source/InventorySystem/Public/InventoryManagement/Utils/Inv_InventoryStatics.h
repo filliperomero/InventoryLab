@@ -4,9 +4,11 @@
 
 #include "CoreMinimal.h"
 #include "Kismet/BlueprintFunctionLibrary.h"
+#include "Types/Inv_GridTypes.h"
 #include "Widgets/Utils/Inv_WidgetUtils.h"
 #include "Inv_InventoryStatics.generated.h"
 
+class UInv_HoverItem;
 class UInv_ItemComponent;
 class UInv_InventoryItem;
 class UInv_InventoryComponent;
@@ -31,6 +33,9 @@ public:
 
 	UFUNCTION(BlueprintCallable, Category = "Inventory System")
 	static void ItemUnhovered(APlayerController* PC);
+
+	UFUNCTION(BlueprintCallable, Category = "Inventory System")
+	static UInv_HoverItem* GetHoverItem(APlayerController* PC);
 };
 
 template<typename T, typename FuncT>
