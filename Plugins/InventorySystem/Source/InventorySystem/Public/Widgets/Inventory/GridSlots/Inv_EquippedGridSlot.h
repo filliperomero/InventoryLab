@@ -25,6 +25,6 @@ public:
 	FEquippedGridSlotClicked EquippedGridSlotClicked;
 
 private:
-	UPROPERTY(EditAnywhere, Category = "Inventory System")
+	UPROPERTY(EditAnywhere, Category = "Inventory System", meta = (Categories="GameItems.Equipment"))
 	FGameplayTag EquipmentTypeTag;
 };
