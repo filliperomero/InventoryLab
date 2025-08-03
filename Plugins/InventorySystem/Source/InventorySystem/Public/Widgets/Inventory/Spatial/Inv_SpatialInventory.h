@@ -79,6 +79,7 @@ private:
 	void SetActiveGrid(UInv_InventoryGrid* Grid, UButton* Button);
 	UInv_ItemDescription* GetItemDescription();
 	void SetItemDescriptionSizeAndPosition(UInv_ItemDescription* ItemDescription, UCanvasPanel* CanvasPanel) const;
+	bool CanEquipHoverItem(UInv_EquippedGridSlot* EquippedGridSlot, const FGameplayTag& EquipmentTypeTag) const;
 
 	FTimerHandle DescriptionTimer;
 

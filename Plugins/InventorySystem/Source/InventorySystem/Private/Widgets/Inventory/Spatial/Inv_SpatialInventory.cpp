@@ -12,6 +12,7 @@
 #include "InventoryManagement/Utils/Inv_InventoryStatics.h"
 #include "Items/Inv_InventoryItem.h"
 #include "Widgets/Inventory/GridSlots/Inv_EquippedGridSlot.h"
+#include "Widgets/Inventory/HoverItem/Inv_HoverItem.h"
 #include "Widgets/Inventory/Spatial/Inv_InventoryGrid.h"
 #include "Widgets/ItemDescription/Inv_ItemDescription.h"
 
@@ -42,6 +43,7 @@ void UInv_SpatialInventory::NativeOnInitialized()
 
 void UInv_SpatialInventory::EquippedGridSlotClicked(UInv_EquippedGridSlot* GridSlot, const FGameplayTag& EquipmentTypeTag)
 {
+	if (!CanEquipHoverItem(GridSlot, EquipmentTypeTag)) return;
 }
 
 FReply UInv_SpatialInventory::NativeOnMouseButtonDown(const FGeometry& InGeometry, const FPointerEvent& InMouseEvent)
@@ -74,6 +76,20 @@ void UInv_SpatialInventory::SetItemDescriptionSizeAndPosition(UInv_ItemDescripti
 		UWidgetLayoutLibrary::GetMousePositionOnViewport(GetOwningPlayer()));
 
 	ItemDescriptionCanvasPanelSlot->SetPosition(ClampedPosition);
+}
+
+bool UInv_SpatialInventory::CanEquipHoverItem(UInv_EquippedGridSlot* EquippedGridSlot, const FGameplayTag& EquipmentTypeTag) const
+{
+	if (!IsValid(EquippedGridSlot) || EquippedGridSlot->GetInventoryItem().IsValid()) return false;
+
+	const UInv_HoverItem* HoverItem = GetHoverItem();
+	if (!IsValid(HoverItem)) return false;
+
+	const UInv_InventoryItem* HeldItem = HoverItem->GetInventoryItem();
+
+	return HasHoverItem() && IsValid(HeldItem) && !HoverItem->IsStackable() &&
+		HeldItem->GetItemManifest().GetItemCategory() == EInv_ItemCategory::Equippable &&
+			HeldItem->GetItemManifest().GetItemType().MatchesTag(EquipmentTypeTag);
 }
 
 FInv_SlotAvailabilityResult UInv_SpatialInventory::HasRoomForItem(UInv_ItemComponent* ItemComponent) const
