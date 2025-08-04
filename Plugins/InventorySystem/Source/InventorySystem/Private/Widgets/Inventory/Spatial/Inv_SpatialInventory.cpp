@@ -13,6 +13,7 @@
 #include "Items/Inv_InventoryItem.h"
 #include "Widgets/Inventory/GridSlots/Inv_EquippedGridSlot.h"
 #include "Widgets/Inventory/HoverItem/Inv_HoverItem.h"
+#include "Widgets/Inventory/SlottedItems/Inv_EquippedSlottedItem.h"
 #include "Widgets/Inventory/Spatial/Inv_InventoryGrid.h"
 #include "Widgets/ItemDescription/Inv_ItemDescription.h"
 
@@ -44,6 +45,15 @@ void UInv_SpatialInventory::NativeOnInitialized()
 void UInv_SpatialInventory::EquippedGridSlotClicked(UInv_EquippedGridSlot* GridSlot, const FGameplayTag& EquipmentTypeTag)
 {
 	if (!CanEquipHoverItem(GridSlot, EquipmentTypeTag)) return;
+
+	const float TileSize = UInv_InventoryStatics::GetInventoryWidget(GetOwningPlayer())->GetTileSize();
+
+	UInv_EquippedSlottedItem* EquippedSlottedItem = GridSlot->OnItemEquipped(GetHoverItem()->GetInventoryItem(), EquipmentTypeTag, TileSize);
+	EquippedSlottedItem->OnEquippedSlottedItemClicked.AddDynamic(this, &ThisClass::EquippedSlottedItemClicked);
+}
+
+void UInv_SpatialInventory::EquippedSlottedItemClicked(UInv_EquippedSlottedItem* SlottedItem)
+{
 }
 
 FReply UInv_SpatialInventory::NativeOnMouseButtonDown(const FGeometry& InGeometry, const FPointerEvent& InMouseEvent)
@@ -146,6 +156,12 @@ UInv_HoverItem* UInv_SpatialInventory::GetHoverItem() const
 	if (!ActiveGrid.IsValid()) return nullptr;
 
 	return ActiveGrid->GetHoverItem();
+}
+
+float UInv_SpatialInventory::GetTileSize() const
+{
+	// Since all grids have the same size, we will get from a random one. Improve this logic if they have different tile sizes.
+	return Grid_Equippables->GetTileSize();
 }
 
 void UInv_SpatialInventory::ShowEquippables()
