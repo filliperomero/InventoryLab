@@ -579,7 +579,11 @@ void UInv_InventoryGrid::OnSlottedItemClicked(int32 GridIndex, const FPointerEve
 		}
 	}
 
-	SwapWithHoverItem(ClickedInventoryItem, GridIndex);
+	// Make sure we can swap with a valid item
+	if (CurrentQueryResult.ValidItem.IsValid())
+	{
+		SwapWithHoverItem(ClickedInventoryItem, GridIndex);
+	}
 }
 
 void UInv_InventoryGrid::CreateItemPopUp(const int32 GridIndex)
