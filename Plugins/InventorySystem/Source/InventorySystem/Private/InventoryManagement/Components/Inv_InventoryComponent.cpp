@@ -151,6 +151,8 @@ void UInv_InventoryComponent::ToggleInventoryMenu()
 {
 	if (bIsInventoryMenuOpen) CloseInventoryMenu();
 	else OpenInventoryMenu();
+
+	OnInventoryMenuToggled.Broadcast(bIsInventoryMenuOpen);
 }
 
 void UInv_InventoryComponent::AddRepSubObj(UObject* SubObj)

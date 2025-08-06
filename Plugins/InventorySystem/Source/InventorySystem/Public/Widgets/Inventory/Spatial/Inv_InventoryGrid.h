@@ -38,6 +38,7 @@ public:
 	float GetTileSize() const { return TileSize; }
 	void ClearHoverItem();
 	void AssignHoverItem(UInv_InventoryItem* InventoryItem);
+	void OnHide();
 
 	UFUNCTION()
 	void AddItem(UInv_InventoryItem* Item);
@@ -48,8 +49,8 @@ private:
 	TWeakObjectPtr<UCanvasPanel> OwningCanvasPanel;
 	
 	void ConstructGrid();
-	FInv_SlotAvailabilityResult HasRoomForItem(const UInv_InventoryItem* InventoryItem);
-	FInv_SlotAvailabilityResult HasRoomForItem(const FInv_ItemManifest& Manifest);
+	FInv_SlotAvailabilityResult HasRoomForItem(const UInv_InventoryItem* InventoryItem, const int32 StackAmountOverride = -1);
+	FInv_SlotAvailabilityResult HasRoomForItem(const FInv_ItemManifest& Manifest, const int32 StackAmountOverride = -1);
 	void AddItemToIndices(const FInv_SlotAvailabilityResult& Result, UInv_InventoryItem* NewItem);
 	void AddItemToIndex(UInv_InventoryItem* Item, const int32 Index, const bool bStackable, const int32 StackSize);
 	UInv_SlottedItem* CreateSlottedItem(UInv_InventoryItem* Item, const bool bStackable, const int32 StackSize, const FInv_GridFragment* GridFragment, const FInv_ImageFragment* ImageFragment, const int32 Index);
@@ -95,6 +96,7 @@ private:
 	bool ShouldFillInStack(const int32 HoveredStackCount, const int32 RoomInClickedSlot) const;
 	void FillInStack(const int32 FillAmount, const int32 Remainder, const int32 Index);
 	void CreateItemPopUp(const int32 GridIndex);
+	void PutHoverItemBack();
 
 	UFUNCTION()
 	void AddStacks(const FInv_SlotAvailabilityResult& Result);
@@ -119,6 +121,9 @@ private:
 
 	UFUNCTION()
 	void OnPopUpMenuConsume(int32 GridIndex);
+
+	UFUNCTION()
+	void OnInventoryMenuToggled(bool bOpen);
 	
 	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = "Inventory System", meta=(AllowPrivateAccess = "true"))
 	EInv_ItemCategory ItemCategory;
