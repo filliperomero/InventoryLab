@@ -163,3 +163,14 @@ void FInv_EquipmentFragment::Assimilate(UInv_CompositeBase* Composite) const
 		ModifierRef.Assimilate(Composite);
 	}
 }
+
+void FInv_EquipmentFragment::Manifest()
+{
+	FInv_InventoryItemFragment::Manifest();
+
+	for (auto& Modifier : EquipModifiers)
+	{
+		auto& ModifierRef = Modifier.GetMutable();
+		ModifierRef.Manifest();
+	}
+}

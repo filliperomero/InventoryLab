@@ -224,8 +224,9 @@ struct FInv_EquipmentFragment : public FInv_InventoryItemFragment
 	void OnUnequip(APlayerController* PC);
 
 	virtual void Assimilate(UInv_CompositeBase* Composite) const override;
+	virtual void Manifest() override;
 
 private:
 	UPROPERTY(EditAnywhere, Category = "Inventory System")
-	TArray<TInstancedStruct<FInv_EquipmentFragment>> EquipModifiers;
+	TArray<TInstancedStruct<FInv_EquipModifier>> EquipModifiers;
 };
