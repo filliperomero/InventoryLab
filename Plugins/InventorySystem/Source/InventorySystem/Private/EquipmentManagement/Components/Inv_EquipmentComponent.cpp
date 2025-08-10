@@ -19,16 +19,33 @@ void UInv_EquipmentComponent::BeginPlay()
 {
 	Super::BeginPlay();
 
-	OwningPlayerController = Cast<APlayerController>(GetOwner());
-	if (OwningPlayerController.IsValid())
-	{
-		if (const ACharacter* OwningCharacter = Cast<ACharacter>(OwningPlayerController->GetCharacter()); IsValid(OwningCharacter))
-		{
-			OwningSkeletalMesh = OwningCharacter->GetMesh();
-		}
+	InitPlayerController();
+}
 
-		InitInventoryComponent();
+void UInv_EquipmentComponent::InitPlayerController()
+{
+	if (OwningPlayerController = Cast<APlayerController>(GetOwner()); OwningPlayerController.IsValid())
+	{
+		if (ACharacter* OwningCharacter = Cast<ACharacter>(OwningPlayerController->GetCharacter()); IsValid(OwningCharacter))
+		{
+			OnPossessedPawnChanged(nullptr, OwningCharacter);
+		}
+		else
+		{
+			// For Multiplayer cases where the Character is still nullptr (BeginPlay can cause that for MP).
+			OwningPlayerController->OnPossessedPawnChanged.AddDynamic(this, &ThisClass::OnPossessedPawnChanged);
+		}
 	}
+}
+
+void UInv_EquipmentComponent::OnPossessedPawnChanged(APawn* OldPawn, APawn* NewPawn)
+{
+	if (const ACharacter* OwningCharacter = Cast<ACharacter>(OwningPlayerController->GetCharacter()); IsValid(OwningCharacter))
+	{
+		OwningSkeletalMesh = OwningCharacter->GetMesh();
+	}
+
+	InitInventoryComponent();
 }
 
 void UInv_EquipmentComponent::InitInventoryComponent()
