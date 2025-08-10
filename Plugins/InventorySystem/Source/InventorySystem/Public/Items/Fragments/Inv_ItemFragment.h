@@ -7,6 +7,7 @@
 #include "StructUtils/InstancedStruct.h"
 #include "Inv_ItemFragment.generated.h"
 
+class AInv_EquipActor;
 class UInv_CompositeBase;
 class APlayerController;
 
@@ -222,11 +223,21 @@ struct FInv_EquipmentFragment : public FInv_InventoryItemFragment
 	bool bEquipped { false };
 	void OnEquip(APlayerController* PC);
 	void OnUnequip(APlayerController* PC);
-
 	virtual void Assimilate(UInv_CompositeBase* Composite) const override;
 	virtual void Manifest() override;
+
+	AInv_EquipActor* SpawnAttachedActor(USkeletalMeshComponent* AttachMesh) const;
+	void DestroyAttachedActor();
 
 private:
 	UPROPERTY(EditAnywhere, Category = "Inventory System")
 	TArray<TInstancedStruct<FInv_EquipModifier>> EquipModifiers;
+
+	UPROPERTY(EditAnywhere, Category = "Inventory System")
+	TSubclassOf<AInv_EquipActor> EquipActorClass = nullptr;
+
+	TWeakObjectPtr<AInv_EquipActor> EquippedActor = nullptr;
+
+	UPROPERTY(EditAnywhere, Category = "Inventory System")
+	FName SocketAttachPoint { NAME_None };
 };
