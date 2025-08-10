@@ -1,7 +1,6 @@
 ﻿// Copyright Fillipe Romero. All Rights Reserved.
 
 #include "Items/Fragments/Inv_ItemFragment.h"
-
 #include "EquipmentManagement/EquipActor/Inv_EquipActor.h"
 #include "Widgets/Composite/Inv_CompositeBase.h"
 #include "Widgets/Composite/Inv_Leaf_Image.h"
@@ -192,4 +191,9 @@ void FInv_EquipmentFragment::DestroyAttachedActor()
 	{
 		EquippedActor->Destroy();
 	}
+}
+
+void FInv_EquipmentFragment::SetEquippedActor(AInv_EquipActor* InEquipActor)
+{
+	EquippedActor = InEquipActor;
 }
