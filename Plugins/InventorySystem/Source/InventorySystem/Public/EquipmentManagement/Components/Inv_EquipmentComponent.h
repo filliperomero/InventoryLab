@@ -22,6 +22,9 @@ class INVENTORYSYSTEM_API UInv_EquipmentComponent : public UActorComponent
 
 public:
 	UInv_EquipmentComponent();
+	void SetOwningSkeletalMesh(USkeletalMeshComponent* InOwningMesh);
+	void SetIsProxy(const bool InbIsProxy) { bIsProxy = InbIsProxy; }
+	void InitializeOwner(APlayerController* InPlayerController);
 
 protected:
 	virtual void BeginPlay() override;
@@ -48,4 +51,6 @@ private:
 	AInv_EquipActor* SpawnEquippedActor(FInv_EquipmentFragment* EquipmentFragment, const FInv_ItemManifest& Manifest, USkeletalMeshComponent* AttachMesh);
 	AInv_EquipActor* FindEquippedActorByTag(const FGameplayTag& EquipmentTypeTag);
 	void RemoveEquippedActorByTag(const FGameplayTag& EquipmentTypeTag);
+
+	bool bIsProxy { false };
 };

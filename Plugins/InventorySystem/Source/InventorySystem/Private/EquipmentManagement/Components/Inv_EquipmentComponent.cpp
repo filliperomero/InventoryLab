@@ -15,6 +15,20 @@ UInv_EquipmentComponent::UInv_EquipmentComponent()
 	PrimaryComponentTick.bCanEverTick = false;
 }
 
+void UInv_EquipmentComponent::SetOwningSkeletalMesh(USkeletalMeshComponent* InOwningMesh)
+{
+	OwningSkeletalMesh = InOwningMesh;
+}
+
+void UInv_EquipmentComponent::InitializeOwner(APlayerController* InPlayerController)
+{
+	if (IsValid(InPlayerController))
+	{
+		OwningPlayerController = InPlayerController;
+		InitInventoryComponent();
+	}
+}
+
 void UInv_EquipmentComponent::BeginPlay()
 {
 	Super::BeginPlay();
@@ -102,7 +116,10 @@ void UInv_EquipmentComponent::OnItemEquipped(UInv_InventoryItem* EquippedItem)
 	FInv_EquipmentFragment* EquipmentFragment = ItemManifest.GetFragmentOfTypeMutable<FInv_EquipmentFragment>();
 	if (!EquipmentFragment) return;
 
-	EquipmentFragment->OnEquip(OwningPlayerController.Get());
+	if (!bIsProxy)
+	{
+		EquipmentFragment->OnEquip(OwningPlayerController.Get());
+	}
 
 	if (!OwningSkeletalMesh.IsValid()) return;
 	AInv_EquipActor* SpawnedEquipActor = SpawnEquippedActor(EquipmentFragment, ItemManifest, OwningSkeletalMesh.Get());
@@ -119,7 +136,10 @@ void UInv_EquipmentComponent::OnItemUnequipped(UInv_InventoryItem* UnequippedIte
 	FInv_EquipmentFragment* EquipmentFragment = ItemManifest.GetFragmentOfTypeMutable<FInv_EquipmentFragment>();
 	if (!EquipmentFragment) return;
 
-	EquipmentFragment->OnUnequip(OwningPlayerController.Get());
+	if (!bIsProxy)
+	{
+		EquipmentFragment->OnUnequip(OwningPlayerController.Get());
+	}
 
 	RemoveEquippedActorByTag(EquipmentFragment->GetEquipmentTag());
 }
