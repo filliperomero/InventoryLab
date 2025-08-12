@@ -225,8 +225,9 @@ void UInv_SpatialInventory::OnItemHovered(UInv_InventoryItem* Item)
 	FTimerDelegate DescriptionTimerDelegate;
 	DescriptionTimerDelegate.BindLambda([this, &Manifest, ItemDescriptionWidget]()
 	{
-		Manifest.AssimilateInventoryFragments(ItemDescriptionWidget);
+		// We need to collapse first
 		GetItemDescription()->SetVisibility(ESlateVisibility::HitTestInvisible);
+		Manifest.AssimilateInventoryFragments(ItemDescriptionWidget);
 	});
 
 	GetOwningPlayer()->GetWorldTimerManager().SetTimer(DescriptionTimer, DescriptionTimerDelegate, DescriptionTimerDelay, false);

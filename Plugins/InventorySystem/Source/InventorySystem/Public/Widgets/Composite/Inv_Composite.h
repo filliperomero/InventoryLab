@@ -22,5 +22,7 @@ public:
 private:
 	UPROPERTY()
 	TArray<TObjectPtr<UInv_CompositeBase>> Children;
-	
+
+public:
+	TArray<UInv_CompositeBase*> GetChildren() { return Children; } 
 };
