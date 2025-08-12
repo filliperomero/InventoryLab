@@ -101,4 +101,5 @@ private:
 
 public:
 	UInv_InventoryBase* GetInventoryMenu() const { return InventoryMenu; }
+	bool IsMenuOpen() const { return bIsInventoryMenuOpen; }
 };
